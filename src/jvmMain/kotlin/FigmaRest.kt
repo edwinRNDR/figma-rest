@@ -4,12 +4,11 @@ import java.io.File
 import java.io.IOException
 import java.time.Duration
 
-private val client = OkHttpClient().apply {
-    newBuilder().apply {
-        connectTimeout(Duration.ofSeconds(30))
-        readTimeout(Duration.ofSeconds(30))
-    }
-}
+private val client = OkHttpClient.Builder()
+    .connectTimeout(Duration.ofSeconds(60))
+    .readTimeout(Duration.ofSeconds(60))
+    .build()
+
 
 fun okFetcher(key: String): (String) -> String {
     return fun(url: String): String {
