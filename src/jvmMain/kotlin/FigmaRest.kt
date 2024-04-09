@@ -10,7 +10,6 @@ fun okFetcher(key: String, timeoutInSeconds: Long = 30): (String) -> String {
         .readTimeout(Duration.ofSeconds(timeoutInSeconds))
         .build()
 
-
     return fun(url: String): String {
         val request = Request.Builder()
             .url("https://api.figma.com$url")
