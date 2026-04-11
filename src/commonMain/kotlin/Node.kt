@@ -520,6 +520,63 @@ sealed class Node() {
         }
     }
 
+    /**
+     * Component node
+     */
+
+    @Serializable
+    @SerialName("COMPONENT")
+    class Component : Node(), ParentNode {
+        override var children: List<Node> = emptyList()
+        var componentId: String = ""
+    }
+
+    @Serializable
+    @SerialName("COMPONENT_SET")
+    class ComponentSet : Node(), ParentNode {
+        override var children: List<Node> = emptyList()
+    }
+
+    @Serializable
+    data class ComponentSets(
+        val file_key: String = "",
+        val node_id: String = "",
+        val thumnbnail_url: String? = null,  // note: typo is in the Figma API itself
+        val created_at: String = "",
+        val updated_at: String = "",
+        val user: User? = null
+    )
+
+    @Serializable
+    @SerialName("INSTANCE")
+    class Instance : Node(), ParentNode {
+        override var children: List<Node> = emptyList()
+        var componentId: String = ""
+        var isExposedInstance: Boolean = false
+        var exposedInstances: List<String> = emptyList()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            if (!super.equals(other)) return false
+            other as Instance
+            if (children != other.children) return false
+            if (componentId != other.componentId) return false
+            if (isExposedInstance != other.isExposedInstance) return false
+            if (exposedInstances != other.exposedInstances) return false
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = super.hashCode()
+            result = 31 * result + children.hashCode()
+            result = 31 * result + componentId.hashCode()
+            result = 31 * result + isExposedInstance.hashCode()
+            result = 31 * result + exposedInstances.hashCode()
+            return result
+        }
+    }
+
     @Serializable
     sealed class VectorBase : Node() {
         val boundVariables: Map<String, List<VariableAlias>> = emptyMap()
