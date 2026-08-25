@@ -21,6 +21,7 @@ fun okFetcher(key: String, timeoutInSeconds: Long = 60): (String) -> String {
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
             response.body?.string()
         }
+
         return body ?: error("no body")
     }
 }

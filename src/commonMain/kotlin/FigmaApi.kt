@@ -1,6 +1,7 @@
 package org.openrndr.figma.rest
 
 import kotlinx.serialization.json.Json
+import java.io.File
 
 class FigmaApi(val fetcher: (String) -> String) {
     fun me(): User = Json.decodeFromString<User>(fetcher("/v1/me"))
@@ -28,6 +29,9 @@ class FigmaApi(val fetcher: (String) -> String) {
         val qs = listOfNotNull(qVersion, qIds, qDepth, qGeometry, qPluginData, qBranchData).joinToString("&")
         val q = if (qs.isNotBlank()) "?$qs" else ""
         val result = fetcher("/v1/files/$key$q")
+
+        File("data/template.json").writeText(result)
+
         return json.decodeFromString<Files>(result)
     }
 
